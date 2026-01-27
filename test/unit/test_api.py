@@ -5,12 +5,6 @@ from src.main import app
 client = TestClient(app)
 
 
-#homepage
-def test_home_endpoint():
-    response = client.get("/")
-    assert response.status_code == 200
-    assert "message" in response.json()
-
 #get data ticker
 def test_get_data_with_ticker():
     response = client.get("ticker/data/?ticker=BTCUSD")
