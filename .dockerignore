@@ -1,0 +1,47 @@
+# .dockerignore
+# Системные файлы Windows
+Thumbs.db
+Desktop.ini
+*.db
+*.lnk
+*.tmp
+*.temp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+.vs/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+docker-compose*.yml
+app.log
+Dockerfile
+.dockerignore
+
+
+# Твои специфичные файлы (пример)
+.env
