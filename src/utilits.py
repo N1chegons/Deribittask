@@ -15,7 +15,7 @@ logger = get_logger(__name__)
 def fetch_and_save_prices():
     logger.info("Celery has started.")
     try:
-        # 1. BTC запрос
+        # 1. BTC request
         logger.info("Request to BTC")
         btc_response = requests.get(
             "https://test.deribit.com/api/v2/public/get_index_price",
@@ -30,7 +30,7 @@ def fetch_and_save_prices():
             logger.error(f"❌ BTC error: {btc_response.text}")
             btc_price = None
 
-        # 2. ETH запрос
+        # 2. ETH request
         logger.info("Request to ETH")
         eth_response = requests.get(
             "https://test.deribit.com/api/v2/public/get_index_price",
@@ -45,7 +45,7 @@ def fetch_and_save_prices():
             logger.error(f"❌ ETH error: {eth_response.text}")
             eth_price = None
 
-        # Добавление в БД
+        # Add to db
         if btc_price is not None:
             try:
                 add_price_in_db_ticker("BTCUSD", btc_price)

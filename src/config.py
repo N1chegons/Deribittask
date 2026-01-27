@@ -8,8 +8,6 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_NAME: str
 
-    RESEND_API_KEY: str
-
     REDIS_URL: str
 
     @property
