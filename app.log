@@ -1,0 +1,12 @@
+2026-01-28 14:35:34 - src.currency.router - INFO - Get data by: BTCUSD
+2026-01-28 14:35:34 - src.currency.router - INFO - Data by ticker BTCUSD received successfully. Price BTCUSD
+2026-01-28 14:38:22 - src.currency.router - INFO - Get latest price by: BTCUSD
+2026-01-28 14:38:22 - src.currency.router - INFO - Latest price by ticker BTCUSD received successfully.
+2026-01-28 14:39:51 - src.currency.router - INFO - Get filtered prices by: ETHUSD
+2026-01-28 14:39:51 - src.currency.router - INFO - Filtered prices by ticker ETHUSD received successfully. Arguments: 2026-01-26 - 2026-01-27
+2026-01-28 14:39:56 - src.currency.router - INFO - Get filtered prices by: ETHUSD
+2026-01-28 14:39:56 - src.currency.router - INFO - Filtered prices by ticker ETHUSD received successfully. Arguments: 2026-01-27 - 2026-01-27
+2026-01-28 14:39:57 - src.currency.router - INFO - Get filtered prices by: ETHUSD
+2026-01-28 14:39:57 - src.currency.router - INFO - Filtered prices by ticker ETHUSD received successfully. Arguments: 2026-01-27 - 2026-01-27
+2026-01-28 14:42:03 - src.currency.router - INFO - Get filtered prices by: ETHUSD
+2026-01-28 14:42:03 - src.currency.router - INFO - Filtered prices by ticker ETHUSD received successfully. Arguments: 2026-01-27 - 2026-01-27

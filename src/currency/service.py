@@ -48,6 +48,7 @@ def get_filtered_prices_ticker(
         prices = result.scalars().all()
 
         return {
+            "Тикер: ": ticker,
             "Период с: ": date_from,
             "Период по: ": date_to,
             "Цена: ": prices

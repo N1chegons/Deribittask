@@ -22,7 +22,7 @@ def get_all_data(ticker: str = Query(..., description="Введите тикер
     if not ticket_data:
         logger.warning(f"Data by {ticker} not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"По тикеру {ticker} информации не найдено.")
-    logger.info(f"Data by ticker {ticker} received successfully. Price {ticker} = {ticket_data.price}")
+    logger.info(f"Data by ticker {ticker} received successfully.")
     return ticket_data
 
 @router.get("/latest_price/")

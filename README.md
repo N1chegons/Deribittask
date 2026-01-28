@@ -1,93 +1,212 @@
-# TaskDeribit
+# Client for Derbit
 
+## 🚀 Тестовое задание
 
+- Клиент для внешнего API для Deribit(https://docs.deribit.com/)
 
-## Getting started
+### ✅ Выполненные требования ТЗ:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+1. **Клиент для Deribit API**
+   - Получение index price для BTC/USD и ETH/USD каждую минуту
+   - Сохранение с UNIX timestamp
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+2. **FastAPI Backend**
+   - 3 GET endpoints с обязательным параметром `ticker`
+   - Получение всех сохраненных данных по валюте
+   - Получение последней цены
+   - Фильтрация по дате (формат YYYY-MM-DD)
 
-## Add your files
+3. **База данных**
+   - PostgreSQL с SQLAlchemy ORM
+   - Модель для хранения цен валют
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+4. **Периодические задачи**
+   - Celery для планирования задач
+   - Redis как брокер сообщений
 
+## 🛠️ Технологии
+
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)](https://www.python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?logo=fastapi)](https://fastapi.tiangolo.com)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org)
+[![Celery](https://img.shields.io/badge/Celery-37814A?logo=celery&logoColor=white)](https://docs.celeryq.dev)
+[![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white)](https://redis.io)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org)
+
+## 📁 Структура проекта
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/Nichegons/taskderibit.git
-git branch -M main
-git push -uf origin main
+deribit-api/
+├── src/
+│ ├── currency/ # Модуль для работы с валютами
+│ │ ├── celery_config.py # Конфигурация Celery
+│ │ ├── models.py # SQLAlchemy модели
+│ │ ├── schemas.py # Pydantic схемы
+│ │ ├── router.py # Основной роутер
+│ │ └── service.py # Операции с БД
+│ ├── main.py # Точка входа FastAPI
+│ ├── config.py # Класс для взаимодействия с переменными окружения
+│ ├── logger.py # Конфигурация для логирования (logger)
+│ ├── utilits.py # Задача celery
+│ └── database.py # Настройки БД
+├── alembic/ # Миграции БД
+│ ├── env.py # Настройка окружения миграций
+│ └── script.py.mako № 
+├── tests/ # Unit тесты
+│ ├── unit/
+│ │ └── test_api.py # Файл с тестами
+├── .env.example # Шаблон для переменных окружения
+├── .gitignore
+├── poetry.lock # Конфигурация Poetry
+├── pyproject.toml # Зависимости Poetry
+└── README.md # Документация
 ```
 
-## Integrate with your tools
+## ⚡ Быстрый старт
+#### 1. Клонируйте репозиторий, затем войдите в папку проекта
+```bash
+git clone https://github.com/N1chegons/TestDeribit.git
+cd TestDeribit
+```
 
-* [Set up project integrations](https://gitlab.com/Nichegons/taskderibit/-/settings/integrations)
+#### 2. Установите зависимости через Poetry
+```bash
+poetry install
+```
 
-## Collaborate with your team
+#### 3. Создайте свой .env и измените переменные, исходя из ваших настроек для работы с переменными окружения на основе [.env.example](.env.example). Составляющее файла:
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=my_db
+DB_USER=user
+DB_PASS=pass
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+REDIS_URL=redis://localhost:6379/0 < Можете оставить по умолчанию, т.к. запуск будет производиться через Docker с стандартным портом
+```
 
-## Test and Deploy
+#### 4. Проведите миграции
+```bash
+alembic revision --autogenerate -m "First Initial"
+alembic upgrade head
+```
 
-Use the built-in continuous integration in GitLab.
+#### 5. Запустите Redis через Docker. Не забудьте запустить Docker Dekstop
+```bash
+docker run -d -p 6379:6379 --name redis-celery redis:alpine     
+```
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+#### 6. Запустите в отдельном терминале worker celery
+```bash
+celery -A src.currency.celery_config.celery_app worker --loglevel=info --pool=gevent
+```
 
-***
+#### 7. Также в отдельном терминале запустите beat celery
+```bash
+celery -A src.currency.celery_config.celery_app beat --loglevel=info
+```
 
-# Editing this README
+#### 8. Запустите сервер uvicorn
+```bash
+uvicorn src.main:app --reload # стандартный запуск
+uvicorn src.main:app --reload --port 1000 # если хотите изменить порт 
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-## Suggestions for a good README
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 📡 API Endpoints
+ - Все методы используют GET запросы с обязательным параметром ticker.
 
-## Name
-Choose a self-explaining name for your project.
+### 1. Получение всех данных по валюте
+```
+GET http://127.0.0.1:8000/ticker/data/?ticker=BTCUSD
+```
+#### Response:
+```
+[
+  {
+    "id": 1,
+    "ticker": "BTCUSD",
+    "price": 87662.53,
+    "timestamp": 1769534255,
+    "created_at": "2026-01-27T17:17:36.085877"
+  },
+  {
+    "id": 3,
+    "ticker": "BTCUSD",
+    "price": 87559.44,
+    "timestamp": 1769534311,
+    "created_at": "2026-01-27T17:18:31.480640"
+  }
+]
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### 2. Получение последней цены
+```
+GET http://127.0.0.1:8000/ticker/latest_price/?ticker=BTCUSD
+```
+#### Response:
+```
+{
+  "Последняя цена BTCUSD": 87632.2
+}
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### 3.  Получение цены с фильтром по дате
+```
+GET http://127.0.0.1:8000/ticker/prices/filtered/?ticker=ETHUSD&date_from=2026-01-27&date_to=2026-01-27
+```
+#### Параметры:
+- date_from (опционально): Начальная дата в формате YYYY-MM-DD
+- date_to (опционально): Конечная дата в формате YYYY-MM-DD
+- 
+#### Response:
+```
+{
+  "Тикер: ": "ETHUSD",
+  "Период с: ": "2026-01-27",
+  "Период по: ": "2026-01-27",
+  "Цена: ": [
+    2945.21,
+    2942.42,
+    2939.98
+  ]
+}
+```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## 🧪 Тестирование
+```bash
+pytest -s -v
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## 📝 Design Decisions
+#### 1. Архитектура 
+Использована модульная архитектура с разделением на слои:
+- models.py - SQLAlchemy модели для работы с БД
+- schemas.py - Pydantic схемы для валидации данных
+- crud.py - операции с базой данных
+- utilits.py - Celery задачи для фоновых операций
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+#### 2. Синхронность
+- FastAPI для сихронного API
+- Request для синхронных HTTP-запросов к Deribit
+- Celery с gevent пулом для фоновых задач
+- Использую gevent т.к. Celery не поддерживает Windows
+- Использую синхронность потому что: Проект не высоконагруженный, первый опыт работы с Celery.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+####  3. База данных
+- PostgreSQL как основная реляционная БД
+- SQLAlchemy с синхронным драйвером psycopg2
+- Alembic для управления миграциями
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+#### 4. Периодические задачи
+- Celery Beat для планирования задач
+- Redis как брокер сообщений
+- Изоляция задач получения цен от основного API
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+#### 5. Логирование
+- Использую logger для логирования API
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## 👤 Автор
+- Богдан
+- GitHub: N1chegons
+- Email: nichegons@gmail.com
