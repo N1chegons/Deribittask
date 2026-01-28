@@ -64,8 +64,8 @@ deribit-api/
 ## ⚡ Быстрый старт
 #### 1. Клонируйте репозиторий, затем войдите в папку проекта
 ```bash
-git clone https://github.com/N1chegons/TestDeribit.git
-cd TestDeribit
+git clone https://github.com/N1chegons/Deribittask.git
+cd Deribittask
 ```
 
 #### 2. Установите зависимости через Poetry
